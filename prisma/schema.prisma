@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String        @id @default(cuid())
+  email               String        @unique
+  emailVerified       DateTime?
+  name                String?
+  image               String?
+  stripeCustomerId    String?       @unique
+  subscriptionTier    Tier          @default(FREE)
+  subscriptionId      String?
+  subscriptionEnd     DateTime?
+  generationsUsed     Int           @default(0)
+  generationsResetAt  DateTime      @default(now())
+  accounts            Account[]
+  sessions            Session[]
+  resumes             Resume[]
+  coverLetters        CoverLetter[]
+  applications        Application[]
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Resume {
+  id           String        @id @default(cuid())
+  userId       String
+  name         String
+  content      String        @db.Text
+  fileUrl      String?
+  isDefault    Boolean       @default(false)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coverLetters CoverLetter[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model CoverLetter {
+  id             String        @id @default(cuid())
+  userId         String
+  resumeId       String?
+  companyName    String
+  jobTitle       String
+  jobDescription String        @db.Text
+  tone           Tone          @default(PROFESSIONAL)
+  content        String        @db.Text
+  atsScore       Int?
+  atsKeywords    String[]
+  status         DocStatus     @default(DRAFT)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resume         Resume?       @relation(fields: [resumeId], references: [id])
+  applications   Application[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Application {
+  id            String       @id @default(cuid())
+  userId        String
+  coverLetterId String?
+  companyName   String
+  jobTitle      String
+  jobUrl        String?
+  stage         Stage        @default(APPLIED)
+  notes         String?      @db.Text
+  appliedAt     DateTime     @default(now())
+  followUpAt    DateTime?
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coverLetter   CoverLetter? @relation(fields: [coverLetterId], references: [id])
+  updatedAt     DateTime     @updatedAt
+}
+
+enum Tier {
+  FREE
+  BASIC
+  PRO
+}
+
+enum Tone {
+  PROFESSIONAL
+  ENTHUSIASTIC
+  CONCISE
+  CREATIVE
+}
+
+enum DocStatus {
+  DRAFT
+  FINAL
+  SENT
+}
+
+enum Stage {
+  APPLIED
+  PHONE_SCREEN
+  INTERVIEW
+  FINAL_ROUND
+  OFFER
+  REJECTED
+  WITHDRAWN
+}
