@@ -16,6 +16,7 @@ export const TIER_LIMITS = {
     followUpGenerator: false,
     bulletRewriter: false,
     jobTracker: false,
+    resumeBuilder: false,
   },
   BASIC: {
     generationsPerMonth: Infinity,
@@ -29,6 +30,7 @@ export const TIER_LIMITS = {
     followUpGenerator: true,
     bulletRewriter: true,
     jobTracker: true,
+    resumeBuilder: false,
   },
   PRO: {
     generationsPerMonth: Infinity,
@@ -42,6 +44,7 @@ export const TIER_LIMITS = {
     followUpGenerator: true,
     bulletRewriter: true,
     jobTracker: true,
+    resumeBuilder: true,
   },
 } as const
 

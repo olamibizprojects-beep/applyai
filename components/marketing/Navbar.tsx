@@ -30,6 +30,7 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-8">
             <Link href="/#features" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Features</Link>
             <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Pricing</Link>
+            <Link href="/guide" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Guide</Link>
             <Link href="/blog" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Blog</Link>
           </div>
 
@@ -50,6 +51,7 @@ export function Navbar() {
         <div className="md:hidden bg-white border-t border-gray-200 px-4 py-4 space-y-3">
           <Link href="/#features" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setMenuOpen(false)}>Features</Link>
           <Link href="/pricing" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setMenuOpen(false)}>Pricing</Link>
+          <Link href="/guide" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setMenuOpen(false)}>Guide</Link>
           <Link href="/blog" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setMenuOpen(false)}>Blog</Link>
           <div className="flex gap-3 pt-2">
             <Button variant="outline" asChild className="flex-1"><Link href="/login">Sign in</Link></Button>

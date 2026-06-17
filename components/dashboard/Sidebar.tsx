@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Wand2, FileText, Kanban, Settings, LogOut, Briefcase } from 'lucide-react'
+import { LayoutDashboard, Wand2, FileText, Kanban, Settings, LogOut, Briefcase, FileSearch2 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
@@ -26,6 +26,7 @@ const navItems = [
   { href: '/letters', icon: FileText, label: 'My Letters' },
   { href: '/tracker', icon: Kanban, label: 'Job Tracker' },
   { href: '/linkedin', icon: Briefcase, label: 'LinkedIn' },
+  { href: '/resume-builder', icon: FileSearch2, label: 'Resume Builder' },
   { href: '/settings', icon: Settings, label: 'Settings' },
 ]
 
