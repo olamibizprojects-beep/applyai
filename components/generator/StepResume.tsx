@@ -35,12 +35,16 @@ export function StepResume({ state, onUpdate, onNext, onBack }: StepResumeProps)
       const formData = new FormData()
       formData.append('file', file)
 
-      // Use UploadThing to upload, then extract text server-side
-      const res = await fetch('/api/uploadthing', { method: 'POST', body: formData })
-      if (!res.ok) throw new Error('Upload failed')
-
+      const res = await fetch('/api/extract-resume', { method: 'POST', body: formData })
       const data = await res.json()
-      const extractedText = data.text ?? ''
+
+      if (!res.ok) {
+        toast.error(data.error ?? 'Failed to read PDF. Please paste your resume text.')
+        setUploading(false)
+        return
+      }
+
+      const extractedText: string = data.text ?? ''
 
       if (extractedText.length > 8000) {
         toast.warning('Resume was truncated to 8000 characters for processing')
@@ -50,9 +54,10 @@ export function StepResume({ state, onUpdate, onNext, onBack }: StepResumeProps)
       setPastedText(finalText)
       setUploadedFileName(file.name)
       onUpdate({ resumeText: finalText })
-      toast.success('Resume uploaded and text extracted!')
+      setTab('paste')
+      toast.success('Resume text extracted — review and continue.')
     } catch {
-      toast.error('Failed to upload resume. Please paste the text manually.')
+      toast.error('Failed to read PDF. Please paste your resume text manually.')
     } finally {
       setUploading(false)
     }
