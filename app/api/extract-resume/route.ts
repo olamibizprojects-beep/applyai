@@ -31,8 +31,9 @@ export async function POST(req: NextRequest) {
 
   try {
     const buffer = Buffer.from(await file.arrayBuffer())
+    // Use lib path directly to skip pdf-parse's test-file loader which breaks in Next.js
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const pdfParse = require('pdf-parse')
+    const pdfParse = require('pdf-parse/lib/pdf-parse.js')
     const parsed = await pdfParse(buffer)
 
     const text = (parsed.text as string)
@@ -49,7 +50,8 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ text: text.slice(0, 10000) })
-  } catch {
+  } catch (err) {
+    console.error('[extract-resume] PDF parse error:', err)
     return NextResponse.json(
       { error: 'Failed to parse PDF. Please paste your resume text manually.' },
       { status: 500 }

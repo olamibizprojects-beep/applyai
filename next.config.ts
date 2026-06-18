@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'applyai.ink' },
     ],
   },
-  serverExternalPackages: ['@prisma/client'],
+  serverExternalPackages: ['@prisma/client', 'pdf-parse'],
   async headers() {
     return [
       {
