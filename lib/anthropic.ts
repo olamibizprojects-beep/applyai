@@ -109,7 +109,7 @@ ${resumeText}
 Analyze this resume against the job description and produce all 5 output sections.`.trim()
 
   const stream = await anthropic.messages.stream({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 4096,
     system: RESUME_OPTIMIZATION_SYSTEM_PROMPT,
     messages: [{ role: 'user', content: userMessage }],
@@ -142,7 +142,7 @@ TONE INSTRUCTION: ${TONE_INSTRUCTIONS[tone]}
 Write the cover letter now.`
 
   const stream = await anthropic.messages.stream({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 1024,
     system: COVER_LETTER_SYSTEM_PROMPT,
     messages: [{ role: 'user', content: userMessage.trim() }],
